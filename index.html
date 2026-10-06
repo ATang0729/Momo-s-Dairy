@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>心晴日记 · 情绪日记与自我关怀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#F5F0E6;--bg-soft:#EDE4D3;--ink:#2B2823;--ink-soft:#6B6458;--ink-faint:#A39B8C;
+  --card:#FBF7EF;--border:#E2D9C7;--sage:#6E8B6B;--terra:#C4724E;--lavender:#8E7FB8;
+  --sky:#5E8394;--gold:#D4A33D;--rose:#D68A9A;--shadow:0 6px 28px rgba(43,40,35,.07);
+  --radius:18px;--ease:cubic-bezier(.22,.61,.36,1)
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);
+  line-height:1.6;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,163,61,.10), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(110,139,107,.08), transparent 60%);
+  transition:background .8s var(--ease)
+}
+body[data-mood]{background-image:radial-gradient(ellipse 90% 60% at 50% -10%, var(--mood-glow,rgba(212,163,61,.12)), transparent 60%)}
+.app{max-width:680px;margin:0 auto;padding:28px 20px 140px;min-height:100vh}
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--sage),var(--gold));
+  display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--shadow)}
+.logo h1{font-family:'Fraunces',serif;font-size:22px;font-weight:600;letter-spacing:-.5px}
+.logo h1 span{color:var(--sage)}
+.date-chip{font-size:12px;color:var(--ink-soft);background:var(--card);padding:6px 12px;border-radius:20px;border:1px solid var(--border)}
+.tagline{font-size:13px;color:var(--ink-soft);margin-bottom:22px;padding-left:2px}
+/* Tabs */
+.tabs{display:flex;gap:6px;background:var(--card);padding:6px;border-radius:16px;border:1px solid var(--border);margin-bottom:24px;position:sticky;top:12px;z-index:20;box-shadow:var(--shadow)}
+.tab{flex:1;text-align:center;padding:11px 8px;border-radius:11px;font-size:14px;font-weight:500;color:var(--ink-soft);cursor:pointer;transition:all .3s var(--ease);white-space:nowrap}
+.tab.active{background:var(--ink);color:var(--bg);box-shadow:0 3px 12px rgba(43,40,35,.18)}
+.tab:not(.active):hover{color:var(--ink)}
+/* Views */
+.view{display:none;animation:fadeUp .5s var(--ease)}
+.view.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+.card-title{font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-title .dot{width:8px;height:8px;border-radius:50%;background:var(--sage)}
+/* Emotion grid */
+.emotion-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.emotion-btn{aspect-ratio:1;border-radius:16px;border:2px solid transparent;background:var(--bg);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;transition:all .3s var(--ease);padding:4px}
+.emotion-btn .emo{font-size:26px;transition:transform .3s var(--ease)}
+.emotion-btn .lbl{font-size:11px;color:var(--ink-soft);font-weight:500}
+.emotion-btn:hover{transform:translateY(-2px)}
+.emotion-btn.selected{border-color:var(--e-color,var(--sage));background:color-mix(in srgb,var(--e-color,var(--sage)) 12%,var(--bg))}
+.emotion-btn.selected .emo{transform:scale(1.15)}
+.emotion-btn.selected .lbl{color:var(--ink)}
+/* Slider */
+.slider-wrap{margin-bottom:20px}
+.slider-label{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:8px}
+.slider-label strong{color:var(--ink);font-family:'Fraunces',serif;font-size:18px}
+input[type=range]{width:100%;-webkit-appearance:none;height:8px;border-radius:4px;background:var(--bg-soft);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--e-color,var(--sage));cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2);border:3px solid var(--card);transition:transform .2s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+/* Tags */
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.tag{padding:7px 14px;border-radius:20px;background:var(--bg);border:1px solid var(--border);font-size:13px;color:var(--ink-soft);cursor:pointer;transition:all .25s var(--ease)}
+.tag:hover{border-color:var(--sage)}
+.tag.active{background:var(--sage);color:#fff;border-color:var(--sage)}
+/* Textarea */
+.note-area{width:100%;min-height:90px;border:1px solid var(--border);border-radius:14px;padding:14px;font-family:inherit;font-size:14px;
+  background:var(--bg);color:var(--ink);resize:vertical;outline:none;transition:border .25s;margin-bottom:18px}
+.note-area:focus{border-color:var(--sage)}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:14px;border:none;
+  font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:all .3s var(--ease)}
+.btn-primary{background:var(--ink);color:var(--bg);width:100%}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(43,40,35,.2)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft)}
+/* Stats row */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center}
+.stat-num{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--sage)}
+.stat-lbl{font-size:11px;color:var(--ink-soft);margin-top:2px}
+/* Chart containers */
+.chart-box{position:relative;height:220px;margin-bottom:8px}
+/* Breathing */
+.breath-wrap{display:flex;flex-direction:column;align-items:center;padding:24px 0}
+.breath-circle{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(110,139,107,.3),rgba(110,139,107,.1));
+  display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;transition:transform 4s var(--ease)}
+.breath-circle::before{content:'';position:absolute;inset:-12px;border-radius:50%;border:2px solid rgba(110,139,107,.25);animation:pulseRing 4s ease-in-out infinite}
+@keyframes pulseRing{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.15);opacity:.2}}
+.breath-text{font-family:'Fraunces',serif;font-size:18px;color:var(--sage);font-weight:500;z-index:2}
+.breath-hint{margin-top:18px;font-size:13px;color:var(--ink-soft);text-align:center}
+/* Care cards */
+.care-list{display:flex;flex-direction:column;gap:12px}
+.care-item{display:flex;gap:14px;padding:16px;background:var(--bg);border-radius:14px;border:1px solid var(--border);transition:transform .25s var(--ease)}
+.care-item:hover{transform:translateX(4px)}
+.care-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.care-body h4{font-size:14px;margin-bottom:3px}
+.care-body p{font-size:12px;color:var(--ink-soft);line-height:1.5}
+/* Calendar */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-head h3{font-family:'Fraunces',serif;font-size:18px}
+.cal-nav{display:flex;gap:8px}
+.cal-nav button{width:32px;height:32px;border-radius:10px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:16px;color:var(--ink-soft);display:flex;align-items:center;justify-content:center}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow{text-align:center;font-size:11px;color:var(--ink-faint);padding:6px 0;font-weight:600}
+.cal-day{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;position:relative;background:var(--bg);border:1px solid transparent;transition:all .2s}
+.cal-day:hover{border-color:var(--border)}
+.cal-day.empty{background:transparent}
+.cal-day.has-mood{color:var(--ink);font-weight:600}
+.cal-day.has-mood::after{content:'';position:absolute;bottom:4px;width:6px;height:6px;border-radius:50%;background:var(--mood-dot,var(--sage))}
+.cal-day.today{border-color:var(--ink)}
+.cal-day.selected{background:var(--ink);color:var(--bg)}
+/* Entry detail */
+.entry-detail{margin-top:16px;padding:16px;background:var(--bg);border-radius:14px;border:1px solid var(--border)}
+.entry-detail .emo-big{font-size:36px;margin-bottom:8px}
+.entry-detail .entry-meta{font-size:13px;color:var(--ink-soft);margin-bottom:8px}
+.entry-detail .entry-note{font-size:14px;line-height:1.6;white-space:pre-wrap}
+.entry-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.entry-tags span{font-size:11px;padding:4px 10px;background:var(--bg-soft);border-radius:12px;color:var(--ink-soft)}
+/* Empty state */
+.empty{text-align:center;padding:40px 20px;color:var(--ink-faint)}
+.empty-icon{font-size:48px;margin-bottom:12px;opacity:.6}
+/* Toast */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:12px 24px;border-radius:12px;font-size:14px;opacity:0;transition:all .35s var(--ease);z-index:100;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Footer */
+.footer{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:30px;padding:0 20px}
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+/* Affirmation */
+.affirmation{font-family:'Fraunces',serif;font-size:18px;line-height:1.5;text-align:center;color:var(--ink);padding:8px 0;font-style:italic}
+.affirmation::before{content:'"';color:var(--gold);font-size:28px;line-height:0;vertical-align:-8px;margin-right:4px}
+.affirmation::after{content:'"';color:var(--gold);font-size:28px;line-height:0;vertical-align:-8px;margin-left:4px}
+@media(max-width:400px){.emotion-grid{grid-template-columns:repeat(4,1fr);gap:8px}.emotion-btn .emo{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="logo">
+      <div class="logo-mark">🌿</div>
+      <h1>心晴<span>日记</span></h1>
+    </div>
+    <div class="date-chip" id="dateChip"></div>
+  </div>
+  <p class="tagline">记录情绪，理解自己，温柔以待。</p>
+
+  <div class="tabs">
+    <div class="tab active" data-view="record">✍️ 记录</div>
+    <div class="tab" data-view="analyze">📊 分析</div>
+    <div class="tab" data-view="care">🌱 关怀</div>
+    <div class="tab" data-view="calendar">📅 日历</div>
+  </div>
+
+  <!-- RECORD -->
+  <div class="view active" id="view-record">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>此刻的心情</div>
+      <div class="emotion-grid" id="emotionGrid"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--terra)"></span>情绪强度</div>
+      <div class="slider-wrap">
+        <div class="slider-label"><span>微弱</span><strong id="intensityVal">5</strong><span>强烈</span></div>
+        <input type="range" id="intensity" min="1" max="10" value="5">
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--lavender)"></span>触发因素</div>
+      <div class="tags" id="triggerTags"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--sky)"></span>想说点什么</div>
+      <textarea class="note-area" id="noteInput" placeholder="今天发生了什么？此刻在想些什么？（可选）"></textarea>
+      <button class="btn btn-primary" id="saveBtn">💾 保存今日心情</button>
+    </div>
+  </div>
+
+  <!-- ANALYZE -->
+  <div class="view" id="view-analyze">
+    <div class="stats" id="statsRow"></div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>近7日情绪趋势</div>
+      <div class="chart-box"><canvas id="trendChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--lavender)"></span>情绪分布</div>
+      <div class="chart-box"><canvas id="distChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--terra)"></span>主要触发因素</div>
+      <div class="chart-box" style="height:200px"><canvas id="triggerChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- CARE -->
+  <div class="view" id="view-care">
+    <div class="card" style="background:linear-gradient(135deg,rgba(110,139,107,.08),rgba(212,163,61,.06))">
+      <div class="affirmation" id="affirmation">深呼吸，你已经做得很好了。</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--sage)"></span>呼吸练习</div>
+      <div class="breath-wrap">
+        <div class="breath-circle" id="breathCircle"><span class="breath-text" id="breathText">点击开始</span></div>
+        <p class="breath-hint">跟随圆圈节奏，吸气 4 秒，呼气 4 秒<br>让身心慢慢平静下来</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--gold)"></span>为你推荐</div>
+      <div class="care-list" id="careList"></div>
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="view" id="view-calendar">
+    <div class="card">
+      <div class="cal-head">
+        <h3 id="calTitle"></h3>
+        <div class="cal-nav">
+          <button id="calPrev">‹</button>
+          <button id="calNext">›</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+    <div id="entryDetail"></div>
+  </div>
+
+  <div class="footer">心晴日记 · 愿你被温柔以待 🌿<br>数据仅保存在你的设备中</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ DATA ============
+const EMOTIONS = [
+  {id:'joy',label:'开心',emoji:'😊',color:'#E8A33D',glow:'rgba(232,163,61,.18)',valence:2},
+  {id:'calm',label:'平静',emoji:'😌',color:'#6E8B6B',glow:'rgba(110,139,107,.18)',valence:1},
+  {id:'content',label:'满足',emoji:'🥰',color:'#D68A9A',glow:'rgba(214,138,154,.18)',valence:2},
+  {id:'tired',label:'疲惫',emoji:'😴',color:'#8E7FB8',glow:'rgba(142,127,184,.18)',valence:-1},
+  {id:'anxious',label:'焦虑',emoji:'😰',color:'#5E8394',glow:'rgba(94,131,148,.18)',valence:-1},
+  {id:'sad',label:'难过',emoji:'😢',color:'#7E95AE',glow:'rgba(126,149,174,.18)',valence:-2},
+  {id:'angry',label:'愤怒',emoji:'😠',color:'#C4724E',glow:'rgba(196,114,78,.18)',valence:-2},
+  {id:'lonely',label:'孤独',emoji:'🥺',color:'#A39B8C',glow:'rgba(163,155,140,.18)',valence:-1}
+];
+const TRIGGERS = ['学业/工作','人际关系','家庭','健康','经济','未来规划','自我期待','天气','睡眠','身体不适','独处','回忆'];
+const AFFIRMATIONS = [
+  '你的感受是真实的，也是被允许的。','今天的你，已经足够好了。','情绪没有对错，它们只是信号。',
+  '慢一点也没关系，你有自己的节奏。','你值得被温柔对待，包括被自己。','每一次呼吸，都是新的开始。',
+  '困境不会永远持续，你会走过去的。','允许自己不完美，那也是一种美。','你正在尽力，这就够了。',
+  '风雨之后，总会有属于你的光。'
+];
+const CARE_MAP = {
+  joy:[{i:'🎉',c:'#E8A33D',t:'记录喜悦时刻',d:'把开心的事写下来，让快乐延续。'},
+       {i:'🎵',c:'#6E8B6B',t:'欢快音乐',d:'听一首节奏明快的歌，舞动起来。'},
+       {i:'🤝',c:'#8E7FB8',t:'分享好心情',d:'告诉朋友或家人，让快乐加倍。'}],
+  calm:[{i:'🌿',c:'#6E8B6B',t:'户外散步',d:'去公园走走，感受自然的气息。'},
+        {i:'☕',c:'#C4724E',t:'一杯热茶',d:'慢慢品味，享受当下的宁静。'},
+        {i:'📖',c:'#5E8394',t:'阅读片刻',d:'翻开喜欢的书，让心灵远行。'}],
+  content:[{i:'✨',c:'#D68A9A',t:'感恩练习',d:'写下三件今天感恩的小事。'},
+           {i:'🛁',c:'#5E8394',t:'放松身心',d:'泡个热水澡，卸下所有疲惫。'},
+           {i:'💌',c:'#E8A33D',t:'肯定自己',d:'对自己说：我做得很好。'}],
+  tired:[{i:'😴',c:'#8E7FB8',t:'小睡片刻',d:'闭眼休息20分钟，给大脑充电。'},
+         {i:'💧',c:'#5E8394',t:'补水',d:'喝一杯温水，唤醒身体。'},
+         {i:'🧘',c:'#6E8B6B',t:'温和拉伸',d:'做几个简单的伸展动作。'}],
+  anxious:[{i:'🌬️',c:'#5E8394',t:'4-7-8 呼吸',d:'吸气4秒，屏息7秒，呼气8秒。'},
+           {i:'✍️',c:'#C4724E',t:'写下担忧',d:'把焦虑倒在纸上，让大脑减负。'},
+           {i:'🌳',c:'#6E8B6B',t:'接地练习',d:'感受双脚踩地，听听周围的声音。'}],
+  sad:[{i:'🤗',c:'#D68A9A',t:'自我拥抱',d:'双臂环抱自己，轻轻拍背。'},
+       {i:'🌧️',c:'#5E8394',t:'允许哭泣',d:'眼泪是情绪的出口，没关系。'},
+       {i:'🌅',c:'#E8A33D',t:'看日落',d:'让温暖的光抚慰你的心。'}],
+  angry:[{i:'🏃',c:'#C4724E',t:'快走释放',d:'出门快走，让怒气随风散去。'},
+         {i:'🗑️',c:'#5E8394',t:'撕碎烦恼',d:'写下让你生气的事，然后撕掉。'},
+         {i:'🧊',c:'#6E8B6B',t:'冷水洗脸',d:'物理降温，让理智回归。'}],
+  lonely:[{i:'📞',c:'#8E7FB8',t:'联系朋友',d:'发条消息给想念的人。'},
+          {i:'🐾',c:'#D68A9A',t:'陪伴小动物',d:'看看可爱的动物视频或去撸猫。'},
+          {i:'🌙',c:'#5E8394',t:'写一封信',d:'给未来的自己写封信，你不孤单。'}]
+};
+
+// ============ STATE ============
+let entries = JSON.parse(localStorage.getItem('xq_entries')||'[]');
+let selectedEmotion = null, selectedTriggers = new Set();
+let calDate = new Date(); calDate.setDate(1);
+let breathing = false;
+
+function save(){ localStorage.setItem('xq_entries', JSON.stringify(entries)); }
+function $(id){ return document.getElementById(id); }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2200); }
+function emoById(id){ return EMOTIONS.find(e=>e.id===id); }
+function todayKey(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+
+// ============ INIT ============
+function init(){
+  const d=new Date();
+  $('dateChip').textContent = `${d.getMonth()+1}月${d.getDate()}日 · ${['周日','周一','周二','周三','周四','周五','周六'][d.getDay()]}`;
+  renderEmotionGrid(); renderTriggerTags();
+  $('intensity').addEventListener('input', e=> $('intensityVal').textContent=e.target.value);
+  $('saveBtn').addEventListener('click', saveEntry);
+  document.querySelectorAll('.tab').forEach(t=> t.addEventListener('click', ()=>switchTab(t.dataset.view)));
+  $('breathCircle').addEventListener('click', toggleBreath);
+  $('calPrev').addEventListener('click', ()=>{ calDate.setMonth(calDate.getMonth()-1); renderCalendar(); });
+  $('calNext').addEventListener('click', ()=>{ calDate.setMonth(calDate.getMonth()+1); renderCalendar(); });
+  setAffirmation();
+}
+
+function renderEmotionGrid(){
+  const g=$('emotionGrid'); g.innerHTML='';
+  EMOTIONS.forEach(e=>{
+    const b=document.createElement('div'); b.className='emotion-btn';
+    b.style.setProperty('--e-color',e.color);
+    b.innerHTML=`<div class="emo">${e.emoji}</div><div class="lbl">${e.label}</div>`;
+    b.addEventListener('click', ()=>{
+      selectedEmotion = e.id;
+      document.body.style.setProperty('--mood-glow', e.glow);
+      document.body.dataset.mood = e.id;
+      document.querySelectorAll('.emotion-btn').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected');
+      $('intensity').style.setProperty('--e-color', e.color);
+    });
+    g.appendChild(b);
+  });
+}
+
+function renderTriggerTags(){
+  const c=$('triggerTags'); c.innerHTML='';
+  TRIGGERS.forEach(t=>{
+    const s=document.createElement('div'); s.className='tag'; s.textContent=t;
+    s.addEventListener('click', ()=>{
+      if(selectedTriggers.has(t)){ selectedTriggers.delete(t); s.classList.remove('active'); }
+      else{ selectedTriggers.add(t); s.classList.add('active'); }
+    });
+    c.appendChild(s);
+  });
+}
+
+function setAffirmation(){
+  $('affirmation').textContent = AFFIRMATIONS[Math.floor(Math.random()*AFFIRMATIONS.length)];
+}
+
+// ============ SAVE ============
+function saveEntry(){
+  if(!selectedEmotion){ toast('请先选择一种心情 🌿'); return; }
+  const entry = {
+    id: Date.now(),
+    date: todayKey(),
+    emotion: selectedEmotion,
+    intensity: parseInt($('intensity').value),
+    triggers: [...selectedTriggers],
+    note: $('noteInput').value.trim(),
+    ts: Date.now()
+  };
+  // Replace today's entry if exists
+  entries = entries.filter(e=>e.date!==entry.date);
+  entries.push(entry); save();
+  toast('心情已记录 ✨');
+  // reset
+  selectedEmotion=null; selectedTriggers.clear();
+  document.querySelectorAll('.emotion-btn').forEach(x=>x.classList.remove('selected'));
+  document.querySelectorAll('.tag').forEach(x=>x.classList.remove('active'));
+  $('intensity').value=5; $('intensityVal').textContent='5';
+  $('noteInput').value='';
+  document.body.style.removeProperty('--mood-glow');
+  delete document.body.dataset.mood;
+  setAffirmation();
+  renderCare();
+}
+
+// ============ TABS ============
+function switchTab(view){
+  document.querySelectorAll('.tab').forEach(t=> t.classList.toggle('active', t.dataset.view===view));
+  document.querySelectorAll('.view').forEach(v=> v.classList.toggle('active', v.id==='view-'+view));
+  if(view==='analyze') renderAnalyze();
+  if(view==='care') renderCare();
+  if(view==='calendar') renderCalendar();
+}
+
+// ============ ANALYZE ============
+let charts={};
+function renderAnalyze(){
+  const last7=[]; for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); last7.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`); }
+  const recs = last7.map(k=> entries.find(e=>e.date===k));
+  // Stats
+  const today = entries.find(e=>e.date===todayKey());
+  const weekEntries = entries.filter(e=>last7.includes(e.date));
+  const avgInt = weekEntries.length ? Math.round(weekEntries.reduce((s,e)=>s+e.intensity,0)/weekEntries.length) : 0;
+  const streak = calcStreak();
+  $('statsRow').innerHTML = `
+    <div class="stat"><div class="stat-num">${weekEntries.length}</div><div class="stat-lbl">本周记录</div></div>
+    <div class="stat"><div class="stat-num">${avgInt}</div><div class="stat-lbl">平均强度</div></div>
+    <div class="stat"><div class="stat-num">${streak}</div><div class="stat-lbl">连续天数</div></div>`;
+  // Trend
+  const trendData = recs.map(r=> r? r.intensity*(emoById(r.emotion).valence>=0?1:-1)*0.5 + 5 : null);
+  drawChart('trendChart', {
+    type:'line',
+    data:{labels:last7.map(k=>k.slice(5)), datasets:[{data:trendData, borderColor:'#6E8B6B', backgroundColor:'rgba(110,139,107,.12)', tension:.4, fill:true, pointRadius:5, pointBackgroundColor:recs.map(r=>r?emoById(r.emotion).color:'#ccc'), pointBorderColor:'#fff', pointBorderWidth:2, spanGaps:true}]},
+    options:{plugins:{legend:{display:false}}, scales:{y:{min:0,max:10,ticks:{display:false},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false},ticks:{color:'#A39B8C',font:{size:11}}}}},
+    plugins:[{afterDraw(c){ const {ctx}=c; c.data.datasets[0].data.forEach((v,i)=>{ if(v!=null){ const r=recs[i]; if(r){ const p=c.getDatasetMeta(0).data[i]; ctx.font='14px sans-serif'; ctx.textAlign='center'; ctx.fillText(emoById(r.emotion).emoji, p.x, p.y-14); } } }); }}]
+  });
+  // Distribution
+  const dist={}; entries.forEach(e=>{ const k=emoById(e.emotion).label+emoById(e.emotion).emoji; dist[k]=(dist[k]||0)+1; });
+  const dLabels=Object.keys(dist), dVals=Object.values(dist), dColors=dLabels.map(l=>EMOTIONS.find(e=>(e.label+e.emoji)===l).color);
+  drawChart('distChart', {type:'doughnut', data:{labels:dLabels, datasets:[{data:dVals, backgroundColor:dColors, borderWidth:0, hoverOffset:8}]}, options:{plugins:{legend:{position:'bottom', labels:{color:'#6B6458',font:{size:11},boxWidth:12,padding:8}}}, cutout:'62%'}});
+  // Triggers
+  const trig={}; entries.forEach(e=>e.triggers.forEach(t=>trig[t]=(trig[t]||0)+1));
+  const tSorted=Object.entries(trig).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  drawChart('triggerChart', {type:'bar', data:{labels:tSorted.map(x=>x[0]), datasets:[{data:tSorted.map(x=>x[1]), backgroundColor:'#C4724E', borderRadius:6}]}, options:{indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{grid:{display:false},ticks:{color:'#A39B8C'}},y:{grid:{display:false},ticks:{color:'#6B6458',font:{size:11}}}}}});
+}
+
+function drawChart(id, cfg){
+  if(charts[id]) charts[id].destroy();
+  charts[id] = new Chart($(id), cfg);
+}
+
+function calcStreak(){
+  let s=0; const d=new Date();
+  while(true){ const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; if(entries.some(e=>e.date===k)){ s++; d.setDate(d.getDate()-1); } else break; }
+  return s;
+}
+
+// ============ CARE ============
+function renderCare(){
+  const today = entries.find(e=>e.date===todayKey());
+  const care = today ? CARE_MAP[today.emotion] : CARE_MAP.calm;
+  const list = $('careList'); list.innerHTML='';
+  care.forEach(c=>{
+    const d=document.createElement('div'); d.className='care-item';
+    d.innerHTML=`<div class="care-icon" style="background:${c.c}22">${c.i}</div><div class="care-body"><h4>${c.t}</h4><p>${c.d}</p></div>`;
+    list.appendChild(d);
+  });
+}
+
+function toggleBreath(){
+  breathing = !breathing;
+  const c=$('breathCircle'), t=$('breathText');
+  if(breathing){
+    let inhale=true; t.textContent='吸气'; c.style.transform='scale(1.4)';
+    breathTimer = setInterval(()=>{
+      inhale=!inhale; t.textContent=inhale?'吸气':'呼气'; c.style.transform=inhale?'scale(1.4)':'scale(1)';
+    }, 4000);
+  } else {
+    clearInterval(breathTimer); t.textContent='点击开始'; c.style.transform='scale(1)';
+  }
+}
+
+// ============ CALENDAR ============
+function renderCalendar(){
+  const y=calDate.getFullYear(), m=calDate.getMonth();
+  $('calTitle').textContent=`${y}年${m+1}月`;
+  const first=new Date(y,m,1).getDay();
+  const days=new Date(y,m+1,0).getDate();
+  const tk=todayKey();
+  const g=$('calGrid'); g.innerHTML='';
+  ['日','一','二','三','四','五','六'].forEach(d=>{ const w=document.createElement('div'); w.className='cal-dow'; w.textContent=d; g.appendChild(w); });
+  for(let i=0;i<first;i++){ const e=document.createElement('div'); e.className='cal-day empty'; g.appendChild(e); }
+  for(let day=1;day<=days;day++){
+    const k=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const entry=entries.find(e=>e.date===k);
+    const d=document.createElement('div'); d.className='cal-day';
+    if(entry){ d.classList.add('has-mood'); d.style.setProperty('--mood-dot', emoById(entry.emotion).color); }
+    if(k===tk) d.classList.add('today');
+    d.textContent=day;
+    d.addEventListener('click', ()=> showEntry(k));
+    g.appendChild(d);
+  }
+}
+
+function showEntry(key){
+  const entry=entries.find(e=>e.date===key);
+  const box=$('entryDetail');
+  if(!entry){ box.innerHTML=`<div class="card"><div class="empty"><div class="empty-icon">🌤️</div><p>这一天没有记录</p></div></div>`; return; }
+  const e=emoById(entry.emotion);
+  box.innerHTML=`<div class="card"><div class="entry-detail">
+    <div class="emo-big">${e.emoji}</div>
+    <div class="entry-meta">${e.label} · 强度 ${entry.intensity}/10 · ${key}</div>
+    ${entry.note?`<div class="entry-note">${entry.note}</div>`:''}
+    ${entry.triggers.length?`<div class="entry-tags">${entry.triggers.map(t=>`<span>${t}</span>`).join('')}</div>`:''}
+  </div></div>`;
+}
+
+init();
+renderCare();
+</script>
+</body>
+</html>
