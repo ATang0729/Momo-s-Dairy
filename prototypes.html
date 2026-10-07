@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f4ed">
+  <meta name="description" content="Momo 默默的桌面与手机原型图集：从一句情绪记录，到按需 AI 和可随时停止的自我关怀。">
+  <title>界面一览 · Momo 默默</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <style>
+    :root{--bg:#f6f4ed;--paper:#fffdf6;--ink:#363d32;--accent:#3d4936;--muted:#77806d;--line:#daddd0;--sage:#e7ebdc;--serif:'Songti SC','STSong','Noto Serif CJK SC',Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}button,a{-webkit-tap-highlight-color:transparent}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:2px solid #687950;outline-offset:5px}h1,h2,h3,p{margin:0}p{line-height:1.9;text-wrap:pretty}.skip{position:fixed;top:-80px;left:20px;background:var(--accent);color:white;padding:14px;z-index:20}.skip:focus{top:12px}
+    .header{height:96px;max-width:1392px;padding:0 56px;margin:auto;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:28px}.brand{display:flex;align-items:center;gap:11px}.brand-mark{position:relative;width:23px;height:29px;border:1.5px solid var(--accent);border-radius:4px;transform:rotate(10deg);margin-right:5px}.brand-mark:before{content:'';position:absolute;width:21px;height:27px;left:-6px;top:2px;transform:rotate(-20deg);background:#b5c19e;border-radius:4px;z-index:-1}.wordmark{font-family:Georgia,serif;font-size:34px;letter-spacing:-2px}.wordmark span{color:#a4ae88}.brand-cn{font-size:12px;letter-spacing:3px;color:var(--muted);margin:6px 0 0 5px}.header nav{display:flex;gap:30px;font-size:12px;align-items:center}.header nav a{padding:14px 0;color:var(--muted);position:relative}.header nav a:hover,.header nav a[aria-current]{color:var(--accent)}.header nav a[aria-current]:after{content:'';width:4px;height:4px;background:var(--accent);border-radius:50%;position:absolute;bottom:2px;left:50%}.header-note{font-size:10px;letter-spacing:1px;color:#8a947c}
+    main{max-width:1192px;margin:auto;padding:0 32px}.hero{padding:76px 0 55px;display:grid;grid-template-columns:1fr 390px;gap:50px;align-items:end}.eyebrow{color:#879276;font-size:10px;letter-spacing:2px;display:flex;gap:12px;align-items:center}.eyebrow:before{content:'';width:23px;height:1px;background:#a6b090}h1{font-family:var(--serif);font-size:47px;line-height:1.55;letter-spacing:1.5px;font-weight:500;margin-top:19px}h1 span{position:relative;white-space:nowrap}h1 span:after{content:'';height:7px;position:absolute;left:0;right:7px;bottom:5px;background:#dce2ca;z-index:-1;transform:rotate(-1deg)}.hero-copy>p{font-size:13px;color:var(--muted)}.hero-copy .hero-links{display:flex;gap:25px;margin-top:20px;align-items:center}.text-link{font-size:12px;display:inline-flex;gap:22px;align-items:center;padding:8px 0;border-bottom:1px solid #c2ccb2}.primary-link{background:var(--accent);color:var(--paper);border-radius:40px;display:inline-flex;align-items:center;gap:23px;padding:13px 23px;font-size:12px;min-height:44px}.primary-link:hover{background:#526044}.index-bar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;display:flex;justify-content:space-between;gap:25px;color:#89937d;font-size:10px;letter-spacing:1px}.index-bar nav{display:flex;gap:24px}.index-bar a{padding:4px 0}.index-bar a:hover{color:var(--accent)}
+    .desktop-section{padding:45px 0 60px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:26px}.section-head h2{font-family:var(--serif);font-size:29px;line-height:1.6;font-weight:500;letter-spacing:1px}.section-head p{font-size:11px;color:var(--muted);margin-top:5px}.section-label{font-family:Georgia,serif;font-size:12px;color:#9ca78c;letter-spacing:1px;margin-bottom:7px;display:block}.zoom-help{display:flex;gap:8px;align-items:center;font-size:10px;color:#8a957b;white-space:nowrap;padding-bottom:5px}.zoom-help svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.4}
+    .preview-button{display:block;width:100%;border:1px solid var(--line);padding:0;background:#eceee3;position:relative;overflow:hidden;transition:border-color .2s,box-shadow .2s}.preview-button:hover{border-color:#aeb99b;box-shadow:0 8px 28px #4656360b}.desktop-preview{border-radius:10px;padding:17px 24px 24px;background:#eceee3}.browser-strip{height:25px;display:flex;align-items:flex-start;gap:5px}.browser-strip i{width:5px;height:5px;border-radius:50%;background:#c5ceba}.browser-strip span{font-size:9px;margin-left:9px;color:#96a085;letter-spacing:.7px;margin-top:-3px}.desktop-preview img{display:block;width:100%;max-height:590px;object-fit:contain;object-position:top center;border-radius:3px;background:var(--bg)}.zoom-tag{position:absolute;right:15px;bottom:15px;display:flex;align-items:center;gap:7px;background:#fffdf4eb;border:1px solid #d6dec9;padding:7px 10px;border-radius:20px;font-size:10px;color:#687957;backdrop-filter:blur(8px)}.zoom-tag svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5}.desktop-caption{display:flex;justify-content:space-between;gap:25px;align-items:start;margin-top:21px}.desktop-caption p{max-width:720px;font-size:12px;color:var(--muted)}.desktop-caption .text-link{white-space:nowrap;padding-top:2px}
+    .mobile-section{border-top:1px solid var(--line);padding:43px 0 66px}.mobile-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:28px;row-gap:48px}.screen-card{min-width:0}.screen-preview{border-radius:10px;height:565px;display:flex;align-items:center;justify-content:center;padding:22px 20px;background:#eaece1}.screen-card:nth-child(2) .screen-preview,.screen-card:nth-child(5) .screen-preview{background:#efede3}.screen-card:nth-child(3) .screen-preview,.screen-card:nth-child(6) .screen-preview{background:#e5e9dc}.screen-preview:before{content:'';position:absolute;border:1px solid #d8dfca;border-radius:50%;width:310px;height:310px;pointer-events:none}.screen-preview img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;position:relative;z-index:1;filter:drop-shadow(0 12px 10px #46533a10)}.screen-preview .zoom-tag{z-index:2;right:10px;bottom:10px;font-size:9px}.screen-info{padding:20px 2px 0}.screen-title{display:flex;gap:12px;align-items:baseline;margin-bottom:9px}.screen-no{font-family:Georgia,serif;color:#9ea88c;font-size:11px}.screen-title h3{font-size:16px;font-weight:500;letter-spacing:.5px}.screen-info>p{font-size:12px;color:var(--muted);line-height:1.95;min-height:70px}.screen-actions{display:flex;align-items:center;justify-content:space-between;margin-top:13px;gap:12px}.screen-actions .text-link{font-size:11px;gap:22px}.state-tag{font-size:9px;color:#879479;border:1px solid #d2dac5;padding:4px 7px;border-radius:3px;white-space:nowrap}.fallback{display:none;text-align:center;position:relative;padding:25px;color:var(--muted);font-size:12px;line-height:2}.is-missing .fallback{display:block}.is-missing img{display:none}.desktop-preview.is-missing .fallback{min-height:260px;place-content:center}.screen-preview.is-missing .fallback{max-width:230px}.fallback strong{display:block;font-family:var(--serif);font-size:24px;font-weight:500;margin-bottom:10px}
+    .design-note{border-top:1px solid var(--line);padding:38px 0 55px;display:grid;grid-template-columns:220px 1fr;gap:45px}.design-note h2{font-family:var(--serif);font-size:24px;line-height:1.7;font-weight:500}.note-columns{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.note-columns h3{font-size:12px;font-weight:500;margin-bottom:10px}.note-columns p{font-size:11px;color:var(--muted)}.footnote{font-size:10px;color:#8a957d;line-height:1.9;border-top:1px solid var(--line);padding:22px 0 30px}.footer{max-width:1192px;padding:22px 32px 37px;margin:auto;display:flex;gap:20px;align-items:center;justify-content:space-between}.footer .wordmark{font-size:27px}.footer p{font-size:10px;color:#909b81}.footer a:last-child{font-size:11px;color:#738263}
+    .lightbox{width:min(1190px,94vw);height:min(1040px,94dvh);max-width:none;max-height:none;border:1px solid #8b947f;border-radius:14px;padding:0;background:var(--bg);color:var(--ink);box-shadow:0 25px 90px #1827114d}.lightbox::backdrop{background:#273124ad;backdrop-filter:blur(6px)}.lightbox-inner{display:flex;flex-direction:column;height:100%}.lightbox-top{display:flex;align-items:center;justify-content:space-between;padding:17px 22px;border-bottom:1px solid var(--line);gap:14px}.lightbox-heading{display:flex;align-items:baseline;gap:13px}.lightbox-counter{font-family:Georgia,serif;font-size:11px;color:#8e9b7d}.lightbox-top h2{font-family:var(--serif);font-size:23px;font-weight:500}.close-button,.arrow-button{border:1px solid #d0d9c2;border-radius:50%;background:var(--bg);width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}.close-button svg,.arrow-button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5}.close-button:hover,.arrow-button:hover{background:var(--sage)}.lightbox-body{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative;padding:22px 72px;background:#eaece1;overflow:auto}.lightbox-body img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;display:block;filter:drop-shadow(0 9px 14px #283a2014)}.arrow-button{position:absolute;top:50%;transform:translateY(-50%)}.arrow-button.prev{left:17px}.arrow-button.next{right:17px}.lightbox-bottom{padding:17px 22px;display:flex;align-items:center;justify-content:space-between;gap:25px;border-top:1px solid var(--line)}.lightbox-bottom p{font-size:11px;color:var(--muted);max-width:650px}.lightbox-links{display:flex;gap:20px;align-items:center;white-space:nowrap}.lightbox-links .text-link{font-size:11px}.lightbox-links .primary-link{min-height:40px;padding:11px 18px;font-size:11px}.image-error{font-size:13px;color:var(--muted);line-height:2;text-align:center}.image-error[hidden]{display:none}
+    @media(min-width:1450px){.screen-preview{height:605px}}@media(max-width:1100px){.header{padding:0 30px}.header-note{display:none}.header nav{gap:23px}.hero{grid-template-columns:1fr 340px}.hero h1{font-size:42px}.screen-preview{height:500px;padding:21px 15px}.mobile-grid{gap:40px 22px}.design-note{grid-template-columns:180px 1fr;gap:25px}.note-columns{gap:20px}}
+    @media(max-width:850px){.header{height:82px}.header nav{gap:19px;font-size:11px}.hero{grid-template-columns:1fr;gap:24px;padding-top:48px}.hero h1 br{display:none}.hero-copy{display:flex;justify-content:space-between;gap:20px;align-items:end}.hero-copy .hero-links{flex-shrink:0;margin-top:0;gap:16px}.hero-copy .hero-links>.text-link{display:none}.mobile-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:38px 23px}.screen-preview{height:580px}.design-note{grid-template-columns:1fr;gap:23px}.design-note h2 br{display:none}.lightbox-top h2{font-size:20px}.lightbox-bottom{align-items:start}.lightbox-links{gap:14px}.lightbox-links .text-link{display:none}.lightbox-body{padding:18px 63px}}
+    @media(max-width:600px){.header{padding:0 22px;height:72px;gap:15px}.wordmark{font-size:29px}.brand-cn,.header nav a[aria-current]{display:none}.header nav{gap:16px;font-size:10px}.brand-mark{width:20px;height:25px;margin-right:0}.brand-mark:before{width:18px;height:23px}.brand{gap:8px}main{padding:0 22px}.hero{padding:39px 0 30px;gap:18px}.hero h1{font-size:33px;margin-top:15px;letter-spacing:.5px}.hero h1 br{display:block}.hero-copy{display:block}.hero-copy>p{font-size:12px}.hero-copy .hero-links{margin-top:20px}.hero-copy .hero-links>.text-link{display:inline-flex}.eyebrow{font-size:9px;letter-spacing:1.7px}.index-bar{font-size:9px;padding:12px 0;gap:15px}.index-bar nav{gap:14px}.index-bar>span{max-width:100px;text-align:right;line-height:1.8;letter-spacing:0}.section-head{gap:14px;margin-bottom:21px}.section-head h2{font-size:26px}.section-head p{font-size:10px}.section-label{font-size:10px}.zoom-help{font-size:9px;gap:5px}.desktop-section{padding:33px 0 38px}.desktop-preview{padding:9px 10px 12px;border-radius:7px}.browser-strip{height:15px;gap:4px}.browser-strip i{width:3px;height:3px}.browser-strip span{font-size:7px;margin-left:5px}.desktop-preview .zoom-tag{font-size:8px;right:7px;bottom:7px;padding:5px 7px}.desktop-caption{display:block;margin-top:15px}.desktop-caption p{font-size:11px}.desktop-caption .text-link{margin-top:10px;font-size:10px}.mobile-section{padding:32px 0 39px}.mobile-section .section-head{display:block}.mobile-section .zoom-help{margin-top:11px}.mobile-grid{gap:30px 15px}.screen-preview{height:345px;padding:13px 9px;border-radius:7px}.screen-preview:before{height:190px;width:190px}.screen-preview .zoom-tag{font-size:0;border:0;padding:5px;right:7px;bottom:7px;gap:0}.screen-preview .zoom-tag svg{width:11px;height:11px}.screen-info{padding:14px 0 0}.screen-title{gap:6px;align-items:baseline;margin-bottom:7px}.screen-no{font-size:9px}.screen-title h3{font-size:13px;letter-spacing:0}.screen-info>p{font-size:10px;min-height:77px;line-height:1.9}.screen-actions{display:block;margin-top:7px}.screen-actions .text-link{font-size:10px;gap:16px}.state-tag{display:none}.design-note{padding:29px 0 31px;gap:21px}.design-note h2{font-size:23px}.note-columns{grid-template-columns:1fr;gap:19px}.note-columns article{display:grid;grid-template-columns:96px 1fr;gap:12px}.note-columns h3{font-size:11px;margin-top:2px;margin-bottom:0}.note-columns p{font-size:10px}.footnote{font-size:9px;padding:19px 0 23px}.footer{padding:16px 22px 30px;gap:13px;flex-wrap:wrap}.footer p{font-size:9px}.footer a:last-child{font-size:10px;margin-left:auto}.fallback{padding:12px;font-size:10px}.fallback strong{font-size:19px}.lightbox{width:96vw;height:93dvh;border-radius:10px}.lightbox-top{padding:12px 14px}.lightbox-top h2{font-size:20px}.lightbox-heading{gap:8px}.close-button{width:36px;height:36px}.lightbox-body{padding:17px 33px}.arrow-button{width:29px;height:29px;background:#f6f4eddd}.arrow-button.prev{left:3px}.arrow-button.next{right:3px}.arrow-button svg{width:14px}.lightbox-bottom{display:block;padding:13px 16px}.lightbox-bottom p{font-size:10px}.lightbox-links{margin-top:11px;justify-content:space-between}.lightbox-links .text-link{display:inline-flex;font-size:10px}.lightbox-links .primary-link{font-size:10px;padding:10px 15px;min-height:37px}}
+    @media(max-width:380px){main{padding:0 17px}.header{padding:0 17px}.header nav{gap:12px}.hero h1{font-size:30px}.screen-preview{height:302px;padding:11px 7px}.mobile-grid{column-gap:11px}.screen-title h3{font-size:12px}.screen-info>p{min-height:95px}.zoom-help{white-space:normal;max-width:94px;line-height:1.6}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#gallery">跳到原型图集</a>
+  <header class="header">
+    <a class="brand" href="index.html" aria-label="返回 Momo 默默首页"><span class="brand-mark" aria-hidden="true"></span><span class="wordmark">momo<span>.</span></span><span class="brand-cn">默默</span></a>
+    <nav aria-label="网站导航"><a href="index.html">体验原型</a><a href="prototypes.html" aria-current="page">界面一览</a><a href="docs/report.html">用户洞察</a><a href="docs/prd.html">产品文档 ↗</a></nav>
+    <span class="header-note">一点空间，六种停留</span>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div><p class="eyebrow">A CLOSER LOOK AT MOMO</p><h1 id="page-title">让一个念头，<br>有<span>安放的地方。</span></h1></div>
+      <div class="hero-copy"><p>从桌面上的一部手机，到手机里的每一次选择。<br>这里收录了 Momo 的关键界面与设计取舍，<br>也为每一张图保留了可以继续操作的入口。</p><div class="hero-links"><a class="primary-link" href="index.html">开始体验 <span aria-hidden="true">↗</span></a><a class="text-link" href="#gallery">往下看界面 <span aria-hidden="true">↓</span></a></div></div>
+    </section>
+    <div class="index-bar"><nav aria-label="图集目录"><a href="#desktop">01 / 桌面全貌</a><a href="#gallery">02 / 手机界面</a></nav><span>点击图片，可放大查看</span></div>
+    <section class="desktop-section" id="desktop" aria-labelledby="desktop-title">
+      <div class="section-head"><div><span class="section-label">THE BIG PICTURE</span><h2 id="desktop-title">一个可以上手的想法。</h2><p>桌面网页 · 可操作的 iPhone · 设计过程展示</p></div><span class="zoom-help"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/></svg>点开查看完整画面</span></div>
+      <button class="preview-button desktop-preview" data-shot="0" aria-label="放大桌面网页原型图">
+        <span class="browser-strip" aria-hidden="true"><i></i><i></i><i></i><span>momo. / a little space for you</span></span>
+        <img src="prototypes/01-desktop.jpg" alt="Momo 桌面原型：左侧产品定位，中间可操作的 iPhone，右侧体验指引" width="1440" height="1000" fetchpriority="high">
+        <span class="fallback"><strong>桌面全貌</strong>前往体验页，查看完整交互。</span>
+        <span class="zoom-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4"/></svg>放大查看</span>
+      </button>
+      <div class="desktop-caption"><p>体验的中心是一部 iPhone；两侧帮助初次到访的人理解产品。继续向下，可以看到从用户洞察、个人判断到概念验证的设计过程，连接“为什么这样做”与“用起来是什么感觉”。</p><a class="text-link" href="index.html" target="_blank" rel="noopener">打开桌面原型 <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section class="mobile-section" id="gallery" aria-labelledby="mobile-title">
+      <div class="section-head"><div><span class="section-label">SIX MOMENTS, YOUR OWN PACE</span><h2 id="mobile-title">从记下来，到缓一缓。</h2><p>不必按顺序，也不必每一步都完成。</p></div><span class="zoom-help">静态界面图 / 点击下方链接可操作</span></div>
+      <div class="mobile-grid">
+        <article class="screen-card">
+          <button class="preview-button screen-preview" data-shot="1" aria-label="放大空白想法卡首页"><img src="prototypes/02-mobile.jpg" alt="手机首页：可直接书写的空白主卡，左下方露出两张无内容卡背" width="417" height="876" loading="lazy"><span class="fallback"><strong>空白想法卡</strong>写一点，就够了。</span><span class="zoom-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4"/></svg>放大查看</span></button>
+          <div class="screen-info"><div class="screen-title"><span class="screen-no">01</span><h3>空白想法卡</h3></div><p>第一次打开，从空白主卡开始，左下方两张无内容卡背提示可以翻阅。直接写下想法；主动左滑再看历史，右滑回到空白卡。</p><div class="screen-actions"><a class="text-link" href="index.html?screen=home" target="_blank" rel="noopener">操作这个界面 <span aria-hidden="true">↗</span></a><span class="state-tag">记录 / 首页</span></div></div>
+        </article>
+        <article class="screen-card">
+          <button class="preview-button screen-preview" data-shot="2" aria-label="放大写下此刻界面"><img src="prototypes/03-write.jpg" alt="新建记录界面：50 字输入区域和可选的情绪标签" width="417" height="876" loading="lazy"><span class="fallback"><strong>写下此刻</strong>不必是一篇日记。</span><span class="zoom-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4"/></svg>放大查看</span></button>
+          <div class="screen-info"><div class="screen-title"><span class="screen-no">02</span><h3>写下此刻</h3></div><p>50 字以内，不用起标题。情绪标签可以选，也可以留空；保存后，这句话只留在当前浏览器里。</p><div class="screen-actions"><a class="text-link" href="index.html?screen=write" target="_blank" rel="noopener">操作这个界面 <span aria-hidden="true">↗</span></a><span class="state-tag">真实可保存</span></div></div>
+        </article>
+        <article class="screen-card">
+          <button class="preview-button screen-preview" data-shot="3" aria-label="放大按需 AI 建议界面"><img src="prototypes/04-ai.jpg" alt="AI 示例对话：从具体面试事实出发，区分外部问题与下一步行动" width="417" height="876" loading="lazy"><span class="fallback"><strong>想聊时再聊</strong>从发生了什么开始。</span><span class="zoom-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4"/></svg>放大查看</span></button>
+          <div class="screen-info"><div class="screen-title"><span class="screen-no">03</span><h3>想聊时，再问 AI</h3></div><p>先确认发生了什么，再选择一个能尝试的小步骤。对话为预设演示，展示事实、判断与建议的区别。</p><div class="screen-actions"><a class="text-link" href="index.html?screen=chat" target="_blank" rel="noopener">操作这个界面 <span aria-hidden="true">↗</span></a><span class="state-tag">预设对话</span></div></div>
+        </article>
+        <article class="screen-card">
+          <button class="preview-button screen-preview" data-shot="4" aria-label="放大情绪回看界面"><img src="prototypes/05-review.jpg" alt="回看界面：按用户选择查看情绪记录，不以连续曲线评价情绪" width="417" height="876" loading="lazy"><span class="fallback"><strong>轻轻回看</strong>过去的某一刻。</span><span class="zoom-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4"/></svg>放大查看</span></button>
+          <div class="screen-info"><div class="screen-title"><span class="screen-no">04</span><h3>轻轻回看</h3></div><p>想回头时才打开。从一次次具体的记录理解变化，不用分数或向下的折线评价这段时间。</p><div class="screen-actions"><a class="text-link" href="index.html?screen=review" target="_blank" rel="noopener">操作这个界面 <span aria-hidden="true">↗</span></a><span class="state-tag">主动回看</span></div></div>
+        </article>
+        <article class="screen-card">
+          <button class="preview-button screen-preview" data-shot="5" aria-label="放大自我关怀选择界面"><img src="prototypes/06-care.jpg" alt="自我关怀界面：可选择呼吸、声音或短暂活动，也可直接离开" width="417" height="876" loading="lazy"><span class="fallback"><strong>给自己一会儿</strong>选一个此刻需要的。</span><span class="zoom-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4"/></svg>放大查看</span></button>
+          <div class="screen-info"><div class="screen-title"><span class="screen-no">05</span><h3>给自己一会儿</h3></div><p>呼吸、听一会声音，或动一动。把自助方案变成有时长、有动作的选择，也保留什么都不做的自由。</p><div class="screen-actions"><a class="text-link" href="index.html?screen=care" target="_blank" rel="noopener">操作这个界面 <span aria-hidden="true">↗</span></a><span class="state-tag">可选自助</span></div></div>
+        </article>
+        <article class="screen-card">
+          <button class="preview-button screen-preview" data-shot="6" aria-label="放大呼吸练习界面"><img src="prototypes/07-breathing.jpg" alt="呼吸练习界面：跟随圆形提示慢下来，可随时暂停或结束" width="417" height="876" loading="lazy"><span class="fallback"><strong>先缓一口气</strong>随时可以停下来。</span><span class="zoom-tag"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4"/></svg>放大查看</span></button>
+          <div class="screen-info"><div class="screen-title"><span class="screen-no">06</span><h3>先缓一口气</h3></div><p>把注意力交给一呼一吸。练习可以暂停、结束；没有完成奖励，也不要求此刻立刻变好。</p><div class="screen-actions"><a class="text-link" href="index.html?screen=care" target="_blank" rel="noopener">从关怀页开始 <span aria-hidden="true">↗</span></a><span class="state-tag">呼吸练习</span></div></div>
+        </article>
+      </div>
+    </section>
+    <section class="design-note" aria-labelledby="design-title"><h2 id="design-title">每一步，<br>都留有余地。</h2><div class="note-columns"><article><h3>信息少一点</h3><p>单张卡片聚焦当下，最多显示五张。不把记录数量变成新的心理负担。</p></article><article><h3>主动权多一点</h3><p>记录与建议分开。AI 等待邀请；用户决定是否继续、何时停止。</p></article><article><h3>下一步具体一点</h3><p>区分事实与推测，让行动有明确的开始，也有容易退出的终点。</p></article></div></section>
+    <p class="footnote">原型说明：本图集呈现静态网页的关键状态。日记与 AI 对话中的示例均为演示内容，未连接实时 AI 或外部平台；用户可自行创建记录并体验自助工具。研究依据及验证边界见<a class="text-link" href="docs/report.html">用户洞察报告 ↗</a>。</p>
+  </main>
+  <footer class="footer"><a class="wordmark" href="index.html" aria-label="Momo 首页">momo.</a><p>留下一点情绪，也留一点空间给自己。</p><a href="docs/prd.html">查看完整 PRD ↗</a></footer>
+  <dialog class="lightbox" id="lightbox" aria-labelledby="lightbox-title" aria-describedby="lightbox-description">
+    <div class="lightbox-inner"><div class="lightbox-top"><div class="lightbox-heading"><span class="lightbox-counter" id="lightbox-counter"></span><h2 id="lightbox-title">界面预览</h2></div><button class="close-button" id="close-lightbox" aria-label="关闭图片预览"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="lightbox-body"><button class="arrow-button prev" id="previous-shot" aria-label="查看上一张原型图"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-7 7 7 7"/></svg></button><img id="lightbox-image" src="prototypes/01-desktop.jpg" alt=""><p class="image-error" id="image-error" hidden>这张图片暂时无法显示。<br>可以通过下方入口直接体验对应界面。</p><button class="arrow-button next" id="next-shot" aria-label="查看下一张原型图"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>
+      <div class="lightbox-bottom"><p id="lightbox-description"></p><div class="lightbox-links"><a class="text-link" id="original-image" href="prototypes/01-desktop.jpg" target="_blank" rel="noopener">打开原图 ↗</a><a class="primary-link" id="live-prototype" href="index.html" target="_blank" rel="noopener">操作这个界面 <span aria-hidden="true">↗</span></a></div></div>
+    </div>
+  </dialog>
+  <script>
+    (() => {
+      const shots = [
+        {title:'桌面全貌',file:'01-desktop.jpg',url:'index.html',description:'以可操作的 iPhone 为中心，让产品定位、体验指引和设计过程都能被看见。'},
+        {title:'空白想法卡',file:'02-mobile.jpg',url:'index.html?screen=home',description:'新用户从空白主卡开始，左下方露出两张无文字、无情绪标签的卡背。主动左滑才展示历史内容，右滑回到空白卡；浏览历史时最多显示五张。'},
+        {title:'写下此刻',file:'03-write.jpg',url:'index.html?screen=write',description:'50 字以内，可以不选情绪。保存只发生在当前浏览器，不需要注册账号。'},
+        {title:'想聊时，再问 AI',file:'04-ai.jpg',url:'index.html?screen=chat',description:'这是预设的 AI 对话示例：从事实出发，区分外部环境与个人可以尝试的下一步。'},
+        {title:'轻轻回看',file:'05-review.jpg',url:'index.html?screen=review',description:'由用户主动回看某一次记录，理解变化，而不把情绪变成成绩。'},
+        {title:'给自己一会儿',file:'06-care.jpg',url:'index.html?screen=care',description:'选择呼吸、声音或活动，也可以直接离开。每一种照顾，都由自己决定。'},
+        {title:'先缓一口气',file:'07-breathing.jpg',url:'index.html?screen=care',description:'从关怀页打开呼吸练习。跟随提示慢下来，可随时暂停或结束。'}
+      ];
+      const dialog = document.getElementById('lightbox');
+      const image = document.getElementById('lightbox-image');
+      const error = document.getElementById('image-error');
+      let current = 0;
+      let trigger = null;
+      function showShot(index) {
+        current = (index + shots.length) % shots.length;
+        const shot = shots[current];
+        document.getElementById('lightbox-title').textContent = shot.title;
+        document.getElementById('lightbox-counter').textContent = String(current + 1).padStart(2,'0') + ' / ' + String(shots.length).padStart(2,'0');
+        document.getElementById('lightbox-description').textContent = shot.description;
+        document.getElementById('original-image').href = 'prototypes/' + shot.file;
+        document.getElementById('live-prototype').href = shot.url;
+        image.hidden = false;
+        image.style.display = '';
+        error.hidden = true;
+        image.alt = shot.title + '原型图';
+        image.src = 'prototypes/' + shot.file;
+      }
+      document.querySelectorAll('[data-shot]').forEach(button => button.addEventListener('click', () => {
+        trigger = button;
+        showShot(Number(button.dataset.shot));
+        if (typeof dialog.showModal === 'function') { dialog.showModal(); document.body.style.overflow = 'hidden'; }
+        else { window.open('prototypes/' + shots[current].file, '_blank', 'noopener'); }
+      }));
+      document.getElementById('close-lightbox').addEventListener('click', () => dialog.close());
+      document.getElementById('previous-shot').addEventListener('click', () => showShot(current - 1));
+      document.getElementById('next-shot').addEventListener('click', () => showShot(current + 1));
+      dialog.addEventListener('keydown', event => {
+        if (event.key === 'ArrowLeft') { event.preventDefault(); showShot(current - 1); }
+        if (event.key === 'ArrowRight') { event.preventDefault(); showShot(current + 1); }
+      });
+      dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+      dialog.addEventListener('close', () => { document.body.style.overflow = ''; if (trigger) trigger.focus(); });
+      image.addEventListener('error', () => { image.hidden = true; image.style.display = 'none'; error.hidden = false; });
+      image.addEventListener('load', () => { image.hidden = false; image.style.display = ''; error.hidden = true; });
+      document.querySelectorAll('.preview-button img').forEach(img => {
+        const button = img.closest('.preview-button');
+        img.addEventListener('error', () => button.classList.add('is-missing'));
+        img.addEventListener('load', () => button.classList.remove('is-missing'));
+        if (img.complete && img.naturalWidth === 0) button.classList.add('is-missing');
+      });
+    })();
+  </script>
+</body>
+</html>
